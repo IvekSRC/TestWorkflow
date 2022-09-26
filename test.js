@@ -1,1 +1,1 @@
-let pom = 110;
+let pom = 10;
