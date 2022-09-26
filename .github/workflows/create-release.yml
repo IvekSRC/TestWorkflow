@@ -8,12 +8,15 @@ jobs:
     name: Create GitHub Release
     runs-on: windows-latest
     steps:
-      - name: Get current date
-        id: date
+      - name: Get current date for title
+        id: dateForTitle
         run: echo "::set-output name=date::$(date +'%Y/%m/%d at %H:%M')"
+      - name: Get current date for tag
+        id: dateForTag
+        run: echo "::set-output name=date::$(date +'%Y%m%d-%H%M')"
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with: 
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          title: ${{ steps.date.outputs.date }}
-          automatic_release_tag:  ${{ steps.date.outputs.date }}
+          title: ${{ steps.dateForTitle.outputs.date }}
+          automatic_release_tag:  ${{ steps.dateForTag.outputs.date }}
