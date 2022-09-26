@@ -28,3 +28,4 @@ jobs:
           release_name: ${{ steps.title.outputs.title }}
           draft: false
           prerelease: false
+          body_path: ${{ github.workspace }}-CHANGELOG.txt
