@@ -4,16 +4,27 @@ on:
   pull_request:
 
 jobs:
-  create-github-release:
-    name: Create GitHub Release
-    runs-on: windows-latest
+  build:
+    name: Create Release
+
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
+      - name: Generate name for title
+        id: title
+        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
       - name: Generate name for tag
         id: tag
-        run: echo "::set-output name=tag::$(date +'%Y/%m/%d-%H/%M')"
+        run: echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
       - name: Create Release
-        run: gh release create ${{ steps.tag.outputs.tag }} --generate-notes
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          release_name: ${{ steps.title.outputs.title }}
+          draft: false
+          prerelease: false
