@@ -1,2 +1,2 @@
 let pom = 190;
-let noviPom = 10; // Komentar
+let noviPom = 10; // Komentar 1
