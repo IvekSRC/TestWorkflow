@@ -10,10 +10,9 @@ jobs:
     steps:
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y/%m/%d-%H/%M')"
+        run: echo "::set-output name=date::$(date +'%Y/%m/%d at %H:%M')"
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with: 
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           title: ${{ steps.date.outputs.date }}
-          automatic_release_tag:  ${{ steps.date.outputs.date }}
