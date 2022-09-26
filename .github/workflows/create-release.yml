@@ -1,23 +1,17 @@
-name: Create Release
-
 on:
   pull_request:
+
+name: Create Release
 
 jobs:
   create-github-release:
     name: Create GitHub Release
     runs-on: windows-latest
     steps:
-      - name: Generate name for title
-        id: title
-        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
       - name: Generate name for tag
         id: tag
         run: echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
       - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with: 
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          title: ${{ steps.title.outputs.title }}
-          automatic_release_tag:  ${{ steps.tag.outputs.tag }}
+        run: gh release create ${{ steps.tag.outputs.tag }} --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
