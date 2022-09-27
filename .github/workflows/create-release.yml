@@ -43,4 +43,5 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: '[0-9]*'
           body-template: |
-            [Link to PR](${{ steps.create_release.outputs.html_url }})
+            [Link to Release](${{ steps.create_release.outputs.html_url }})
+          body-update-action: 'suffix'
