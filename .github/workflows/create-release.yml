@@ -35,4 +35,4 @@ jobs:
           draft: false
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
-      - run: echo "Release URL - ${{ steps.create_release.outputs.html_url }} ${{ html_url }}"
+      - run: echo "Release URL - ${{ steps.create_release.outputs.html_url }}"
