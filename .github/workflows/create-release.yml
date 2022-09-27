@@ -35,13 +35,11 @@ jobs:
           draft: false
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
-      - run: echo "Release URL - ${{ steps.create_release.outputs.html_url }}"
-      - name: Edit PR
+      - name: Edit PR (Adding link to created release)
         id: edit_pr
         uses: tzkhan/pr-update-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: '[0-9]*'
-          body-template: |
-            [Link to Release](${{ steps.create_release.outputs.html_url }})
+          body-template: [Link to Release](${{ steps.create_release.outputs.html_url }})
           body-update-action: 'suffix'
