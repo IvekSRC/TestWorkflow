@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Get PR
+        uses: 8BitJonny/gh-get-current-pr@2.1.1
+        id: PR
       - name: Generate name for title
         id: title
         run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
@@ -28,3 +31,4 @@ jobs:
           release_name: ${{ steps.title.outputs.title }}
           draft: false
           prerelease: false
+          body: ${{ steps.PR.outputs.pr }}
