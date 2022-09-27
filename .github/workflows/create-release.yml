@@ -36,8 +36,10 @@ jobs:
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
       - run: echo "Release URL - ${{ steps.create_release.outputs.html_url }}"
-      - uses: gr2m/create-or-update-pull-request-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Edit PR
+        id: edit_pr
+        uses: tzkhan/pr-update-action@v2
         with:
-          body: "My pull request body"
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          body-template: |
+            [Link to PR](${{ steps.create_release.outputs.html_url }})
