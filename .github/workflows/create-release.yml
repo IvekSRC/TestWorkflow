@@ -18,7 +18,7 @@ jobs:
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
-      - run: echo "${{ steps.PR.outputs.pr.number }} ${{ steps.PR.outputs.pr.body }}"
+      - run: echo "${{ steps.PR.outputs.number }} ${{ steps.PR.outputs.body }}"
       - name: Generate name for title
         id: title
         run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
