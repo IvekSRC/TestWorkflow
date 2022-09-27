@@ -41,6 +41,7 @@ jobs:
         uses: tzkhan/pr-update-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          base-branch-regex: '[0-9\d-_.\\/]+'
+          base-branch-regex: '[0-9]*'
           body-template: |
+            ${{ steps.PR.outputs.pr_body }}
             [Link to PR](${{ steps.create_release.outputs.html_url }})
