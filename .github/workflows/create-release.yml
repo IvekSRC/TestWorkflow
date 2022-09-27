@@ -15,6 +15,7 @@ jobs:
       - name: Get PR
         uses: 8BitJonny/gh-get-current-pr@2.1.1
         id: PR
+      - run: echo "Your PR number is ${{ steps.PR.outputs.number }} and its JSON is ${{ steps.PR.outputs.pr }}"
       - name: Generate name for title
         id: title
         run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
