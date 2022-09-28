@@ -39,7 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: "${env.YEAR}${{ steps.current-time.outputs.month }}${{ steps.current-time.outputs.day }}-${{ steps.current-time.outputs.hour }}${{ steps.current-time.outputs.minute }}" 
+          tag_name: "${{ steps.current-time.outputs.year }}${{ steps.current-time.outputs.month }}${{ steps.current-time.outputs.day }}-${{ steps.current-time.outputs.hour }}${{ steps.current-time.outputs.minute }}" 
           release_name: "${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.month }}/${{ steps.current-time.outputs.day }} at ${{ steps.current-time.outputs.hour }}:${{ steps.current-time.outputs.minute }}"
           draft: false
           prerelease: false
@@ -49,7 +49,8 @@ jobs:
         uses: tzkhan/pr-update-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          base-branch-regex: '.*'
+          base-branch-regex: 'main'
+          head-branch-regex: 'release/*'
           body-template: |
             [Link to Release](${{ steps.create_release.outputs.html_url }})
           body-update-action: 'suffix'
