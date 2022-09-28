@@ -15,6 +15,8 @@ jobs:
 
     if: startsWith(github.head_ref, 'release/')
     steps:
+      env:
+          MINUTE: '%M'
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Get PR
@@ -23,11 +25,9 @@ jobs:
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
-        env:
-          MINUTE: '%M'
       - name: Generate name for title
         id: title
-        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:${{ env.MINUTE }}')"
+        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:${{ steps.env.MINUTE }}')"
       - name: Generate name for tag
         id: tag
         run: echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
