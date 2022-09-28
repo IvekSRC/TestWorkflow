@@ -32,7 +32,6 @@ jobs:
         id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          R_TIME: "${{ steps.current-time.outputs.readableTime }}"
           F_TIME: "${{ steps.current-time.outputs.formattedTime }}"
           YEAR: ${{ steps.current-time.outputs.year }}
           MONTH: ${{ steps.current-time.outputs.month }}
@@ -41,8 +40,8 @@ jobs:
           MINUTE: ${{ steps.current-time.outputs.minute }}
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ env.YEAR }}${{ env.MONTH }}${{ env.DAY }}-${{ env.HOUR }}${{ env.MINUTE }}
-          release_name: "${{ env.YEAR }}/${{ env.MONTH }}/${{ env.DAY }} at ${{ env.HOUR }}:${{ env.MINUTE }}"
+          tag_name: ${{ env.F_TIME }}$
+          release_name: "${{ env.YEAR }}/${{ env.F_TIME.MONTH }}/${{ env.DAY }} at ${{ env.HOUR }}:${{ env.MINUTE }}"
           draft: false
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
