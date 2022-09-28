@@ -36,9 +36,8 @@ jobs:
           DAY: "${{ steps.current-time.outputs.day }}"
           HOUR: "${{ steps.current-time.outputs.hour }}"
           MINUTE: "${{ steps.current-time.outputs.minute }}"
-        uses: actions/create-release@v1
-        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/create-release@v1
         with:
           tag_name: $YEAR$MONTH$DAY-$HOUR$MINUTE
           release_name: $YEAR/$MONTH/$DAY at $HOUR:$MINUTE
