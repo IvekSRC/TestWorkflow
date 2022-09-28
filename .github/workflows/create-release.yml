@@ -2,6 +2,10 @@ name: Create Release
 
 on:
   pull_request:
+    types:
+      - opened
+    branches:
+      - main
 
 jobs:
   build:
@@ -9,6 +13,7 @@ jobs:
 
     runs-on: windows-latest
 
+    if: startsWith(github.head_ref, 'release/')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -18,7 +23,21 @@ jobs:
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
-      - run: echo "${{ steps.PR.outputs.pr.number }} ${{ steps.PR.outputs.pr.body }}"
+      - name: Get current time
+        uses: josStorer/get-current-time@v2.0.1
+        id: current-time
+        with:
+          format: YYYYMMDD-HH
+      - name: Generate names for title and tag
+        id: namesForTitleAndTag
+        env:
+          TIME: "${{ steps.current-time.outputs.time }}"
+          YEAR: "${{ steps.current-time.outputs.year }}"
+          MONTH: "${{ steps.current-time.outputs.month }}"
+          DAY: "${{ steps.current-time.outputs.day }}"
+          HOUR: "${{ steps.current-time.outputs.hour }}"
+          MINUTE: "${{ steps.current-time.outputs.minute }}"
+        run: echo $TIME $YEAR $MONTH $DAY $HOUR $MINUTE
       - name: Generate name for title
         id: title
         run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
@@ -32,7 +51,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.tag.outputs.tag }}
-          release_name: ${{ steps.title.outputs.title }}
+          release_name: ${{ steps.namesForTitleAndTag.outputs.title }}
           draft: false
           prerelease: false
-          body: ${{ steps.PR.outputs.pr.body }}
+          body: ${{ steps.PR.outputs.pr_body }}
+      - name: Edit PR (Adding link to created release)
+        id: edit_pr
+        uses: tzkhan/pr-update-action@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          base-branch-regex: '.*'
+          body-template: |
+            [Link to Release](${{ steps.create_release.outputs.html_url }})
+          body-update-action: 'suffix'
