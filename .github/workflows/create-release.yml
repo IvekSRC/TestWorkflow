@@ -23,6 +23,15 @@ jobs:
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
+      - name: Generate names for title and tag
+        id: namesForTitleAndTag
+        env: 
+          YEAR: $(date +'%Y')
+          MONTH: $(date +'%m')
+          DAY: $(date +'%d')
+          HOUR: $(date +'%H')
+          MINUTE: $(date +'%M')
+        run: echo "::set-output name=title::$YEAR/$MONTH/$DAY at $HOUR:$MINUTE"
       - name: Generate name for title
         id: title
         run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
@@ -36,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.tag.outputs.tag }}
-          release_name: ${{ steps.title.outputs.title }}
+          release_name: ${{ steps.namesForTitleAndTag.outputs.title }}
           draft: false
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
