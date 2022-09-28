@@ -27,11 +27,13 @@ jobs:
         uses: josStorer/get-current-time@v2.0.1
         id: current-time
         with:
-          format: MMDD-HHmm
+          format: YYYYMMDD-HHmm
       - name: Create Release
         id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          R_TIME: "${{ steps.current-time.outputs.readableTime }}"
+          F_TIME: "${{ steps.current-time.outputs.formattedTime }}"
           YEAR: ${{ steps.current-time.outputs.year }}
           MONTH: ${{ steps.current-time.outputs.month }}
           DAY: ${{ steps.current-time.outputs.day }}
