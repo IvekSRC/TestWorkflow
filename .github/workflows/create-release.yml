@@ -33,7 +33,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           YEAR: ${{ steps.current-time.outputs.year }}
-          MONTH: ${{ steps.current-time.outputs.month }}
+          MONTH: ${{ steps.current-time.outputs.months }}
           DAY: ${{ steps.current-time.outputs.day }}
           HOUR: ${{ steps.current-time.outputs.hours }}
           MINUTE: ${{ steps.current-time.outputs.minutes }}
