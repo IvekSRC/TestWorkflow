@@ -27,7 +27,7 @@ jobs:
         uses: josStorer/get-current-time@v2.0.1
         id: current-time
         with:
-          format: YYYYMMDD-HH
+          format: YYYYMMDD-HHmm
       - name: Create Release
         id: create_release
         env:
@@ -40,7 +40,7 @@ jobs:
         uses: actions/create-release@v1
         with:
           tag_name: ${{ env.YEAR }}${{ env.MONTH }}${{ env.DAY }}-${{ env.HOUR }}${{ env.MINUTE }}
-          release_name: "${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.month }}/${{ steps.current-time.outputs.day }} at ${{ steps.current-time.outputs.hour }}:${{ steps.current-time.outputs.minute }}"
+          release_name: "${{ env.YEAR }}/${{ env.MONTH }}/${{ env.DAY }} at ${{ env.HOUR }}:${{ env.MINUTE }}"
           draft: false
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
