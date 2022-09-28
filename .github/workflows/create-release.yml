@@ -35,8 +35,8 @@ jobs:
           YEAR: ${{ steps.current-time.outputs.year }}
           MONTH: ${{ steps.current-time.outputs.month }}
           DAY: ${{ steps.current-time.outputs.day }}
-          HOUR: ${{ steps.current-time.outputs.hours }}
-          MINUTE: ${{ steps.current-time.outputs.minutes }}
+          HOUR: ${{ steps.current-time.outputs.hour }}
+          MINUTE: ${{ steps.current-time.outputs.minute }}
         uses: actions/create-release@v1
         with:
           tag_name: ${{ env.YEAR }}${{ env.MONTH }}${{ env.DAY }}-${{ env.HOUR }}${{ env.MINUTE }}
