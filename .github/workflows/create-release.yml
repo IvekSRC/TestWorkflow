@@ -23,15 +23,21 @@ jobs:
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
+      - name: Get current time
+        uses: josStorer/get-current-time@v2.0.1
+        id: current-time
+        with:
+          format: YYYYMMDD-HH
       - name: Generate names for title and tag
         id: namesForTitleAndTag
-        env: 
-          YEAR: $(date +'%Y')
-          MONTH: $(date +'%m')
-          DAY: $(date +'%d')
-          HOUR: $(date +'%H')
-          MINUTE: $(date +'%M')
-        run: echo "::set-output name=title::$YEAR/$MONTH/$DAY at $HOUR:$MINUTE"
+        env:
+          TIME: "${{ steps.current-time.outputs.time }}"
+          YEAR: "${{ steps.current-time.outputs.year }}"
+          MONTH: "${{ steps.current-time.outputs.month }}"
+          DAY: "${{ steps.current-time.outputs.day }}"
+          HOUR: "${{ steps.current-time.outputs.hour }}"
+          MINUTE: "${{ steps.current-time.outputs.minute }}"
+        run: echo $TIME $YEAR $MONTH $DAY $HOUR $MINUTE
       - name: Generate name for title
         id: title
         run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
