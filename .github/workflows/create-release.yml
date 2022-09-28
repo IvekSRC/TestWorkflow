@@ -2,8 +2,14 @@ name: Create Release
 
 on:
   pull_request:
+    types:
+      - opened
+    branches:
+      - main
 
 jobs:
+  run_if:
+    if: startsWith(github.head_ref, 'release/')
   build:
     name: Create Release
 
