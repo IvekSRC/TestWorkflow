@@ -39,7 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: echo "$YEAR$MONTH$DAY-$HOUR$MINUTE" 
+          tag_name: "$YEAR"
           release_name: "${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.month }}/${{ steps.current-time.outputs.day }} at ${{ steps.current-time.outputs.hour }}:${{ steps.current-time.outputs.minute }}"
           draft: false
           prerelease: false
