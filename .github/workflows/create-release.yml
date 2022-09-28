@@ -28,30 +28,20 @@ jobs:
         id: current-time
         with:
           format: YYYYMMDD-HH
-      - name: Generate names for title and tag
-        id: namesForTitleAndTag
+      - name: Create Release
+        id: create_release
         env:
           YEAR: "${{ steps.current-time.outputs.year }}"
           MONTH: "${{ steps.current-time.outputs.month }}"
           DAY: "${{ steps.current-time.outputs.day }}"
           HOUR: "${{ steps.current-time.outputs.hour }}"
           MINUTE: "${{ steps.current-time.outputs.minute }}"
-        run: echo "::set-output name=title::$($YEAR/$MONTH/$DAY at $HOUR:$MINUTE)
-                   ::set-output name=tag::$($YEAR$MONTH$DAY-$HOUR$MINUTE)"
-      - name: Generate name for title
-        id: title
-        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
-      - name: Generate name for tag
-        id: tag
-        run: echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
-      - name: Create Release
-        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
-          release_name: ${{ steps.namesForTitleAndTag.outputs.title }}
+          tag_name: $YEAR$MONTH$DAY-$HOUR$MINUTE
+          release_name: $YEAR/$MONTH/$DAY at $HOUR:$MINUTE
           draft: false
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
