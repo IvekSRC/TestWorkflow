@@ -37,6 +37,8 @@ jobs:
           HOUR: ${{ steps.current-time.outputs.hour }}
           MINUTE: ${{ steps.current-time.outputs.minute }}
         run: echo "set-output name=tag::$YEAR$MONTH$DAY-$HOUR$MINUTE"
+      - run: echo ${{ steps.tag.outputs.tag }}
+      - run: echo ${{ steps.tag.outputs.output1 }}
       - name: Create Release
         id: create_release
         env:
