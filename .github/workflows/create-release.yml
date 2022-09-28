@@ -28,24 +28,18 @@ jobs:
         id: current-time
         with:
           format: YYYYMMDD-HH
-      - name: Generate name for tag
-        id: tag
+      - name: Create Release
+        id: create_release
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           YEAR: ${{ steps.current-time.outputs.year }}
           MONTH: ${{ steps.current-time.outputs.month }}
           DAY: ${{ steps.current-time.outputs.day }}
           HOUR: ${{ steps.current-time.outputs.hour }}
           MINUTE: ${{ steps.current-time.outputs.minute }}
-        run: echo "set-output name=tag::$YEAR$MONTH$DAY-$HOUR$MINUTE"
-      - run: echo ${{ steps.tag.outputs.tag }}
-      - run: echo ${{ steps.tag.outputs.output1 }}
-      - name: Create Release
-        id: create_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: "${{ steps.tag.outputs.tag }}"
+          tag_name: ${{ env.YEAR }}${{ env.MONTH }}${{ env.DAY }}-${{ env.HOUR }}${{ env.MINUTE }}
           release_name: "${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.month }}/${{ steps.current-time.outputs.day }} at ${{ steps.current-time.outputs.hour }}:${{ steps.current-time.outputs.minute }}"
           draft: false
           prerelease: false
