@@ -24,10 +24,10 @@ jobs:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
       - name: Get current time
-        uses: josStorer/get-current-time@v2.0.1
+        uses: Kaven-Universe/github-action-current-date-time@v1.1.0
         id: current-time
         with:
-          format: YYYYMDD-HHm
+          format: "YYYY_MM_DD HH_mm"
       - name: Create Release
         id: create_release
         env:
@@ -35,8 +35,8 @@ jobs:
           YEAR: ${{ steps.current-time.outputs.year }}
           MONTH: ${{ steps.current-time.outputs.month }}
           DAY: ${{ steps.current-time.outputs.day }}
-          HOUR: ${{ steps.current-time.outputs.hour }}
-          MINUTE: ${{ steps.current-time.outputs.minute }}
+          HOUR: ${{ steps.current-time.outputs.hours }}
+          MINUTE: ${{ steps.current-time.outputs.minutes }}
         uses: actions/create-release@v1
         with:
           tag_name: ${{ env.YEAR }}${{ env.MONTH }}${{ env.DAY }}-${{ env.HOUR }}${{ env.MINUTE }}
