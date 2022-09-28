@@ -39,8 +39,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: "$YEAR$MONTH$DAY-$HOUR$MINUTE"
-          release_name: "$YEAR/$MONTH/$DAY at $HOUR:$MINUTE"
+          tag_name: $YEAR$MONTH$DAY-$HOUR$MINUTE
+          release_name: $YEAR/$MONTH/$DAYat$HOUR:$MINUTE
           draft: false
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
