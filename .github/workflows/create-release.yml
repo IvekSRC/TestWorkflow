@@ -27,8 +27,8 @@ jobs:
         id: namesForTitleAndTag
         env:
           MINUTE: '%M'
-        generateTitle: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:$MINUTE')"
-        generateTag: echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
+        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:$MINUTE')
+                   ::set-output name=tag::$(date +'%Y%m%d-%H%M')"
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
