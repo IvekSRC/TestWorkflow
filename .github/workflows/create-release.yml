@@ -26,8 +26,6 @@ jobs:
       - name: Get current time
         uses: josStorer/get-current-time@v2.0.1
         id: current-time
-        with:
-          format: YYYYMMDD-HHmm
       - name: Create Release
         id: create_release
         env:
