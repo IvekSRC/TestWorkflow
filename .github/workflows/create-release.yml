@@ -2,13 +2,18 @@ name: Create Release
 
 on:
   pull_request:
+    types:
+      - opened
+    branches:
+      - main
 
 jobs:
   build:
     name: Create Release
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
+    if: startsWith(github.head_ref, 'release/')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -18,21 +23,31 @@ jobs:
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
-      - run: echo "${{ steps.PR.outputs.pr.number }} ${{ steps.PR.outputs.pr.body }}"
-      - name: Generate name for title
-        id: title
-        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
-      - name: Generate name for tag
-        id: tag
-        run: echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
+      - name: Get current time
+        uses: josStorer/get-current-time@v2.0.1
+        id: current-time
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          YEAR: ${{ steps.current-time.outputs.year }}
+          MONTH: ${{ steps.current-time.outputs.month }}
+          DAY: ${{ steps.current-time.outputs.day }}
+          HOUR: ${{ steps.current-time.outputs.hour }}
+          MINUTE: ${{ steps.current-time.outputs.minute }}
+        uses: actions/create-release@v1
         with:
-          tag_name: ${{ steps.tag.outputs.tag }}
-          release_name: ${{ steps.title.outputs.title }}
+          tag_name: ${{ env.YEAR }}${{ env.MONTH }}${{ env.DAY }}-${{ env.HOUR }}${{ env.MINUTE }}
+          release_name: "${{ env.YEAR }}/${{ env.MONTH }}/${{ env.DAY }} at ${{ env.HOUR }}:${{ env.MINUTE }}"
           draft: false
           prerelease: false
-          body: ${{ steps.PR.outputs.pr.body }}
+          body: ${{ steps.PR.outputs.pr_body }}
+      - name: Edit PR (Adding link to created release)
+        id: edit_pr
+        uses: tzkhan/pr-update-action@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          base-branch-regex: ".*"
+          body-template: |
+            [Link to Release](${{ steps.create_release.outputs.html_url }})
+          body-update-action: "suffix"
