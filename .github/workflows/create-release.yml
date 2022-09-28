@@ -27,12 +27,11 @@ jobs:
         uses: josStorer/get-current-time@v2.0.1
         id: current-time
         with:
-          format: YYYYMMDD-HHmm YYYY/MM/DD at HH:mm
+          format: YYYYMMDD-HHmm
       - name: Create Release
         id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TIME: "${{ steps.current-time.outputs.time }}"
           F_TIME: "${{ steps.current-time.outputs.formattedTime }}"
           YEAR: ${{ steps.current-time.outputs.year }}
           MONTH: ${{ steps.current-time.outputs.month }}
@@ -42,7 +41,7 @@ jobs:
         uses: actions/create-release@v1
         with:
           tag_name: ${{ env.F_TIME }}
-          release_name: "${{ env.YEAR }}/${{ env.MONTH }}/${{ env.DAY }} at ${{ env.HOUR }}:${{ env.MINUTE }}"
+          release_name: "${{ env.YEAR }}/${{ env.F_TIME[4] }}/${{ env.DAY }} at ${{ env.HOUR }}:${{ env.MINUTE }}"
           draft: false
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
