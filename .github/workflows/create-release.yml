@@ -13,7 +13,7 @@ jobs:
 
     runs-on: windows-latest
 
-    run_if: startsWith(github.head_ref, 'release/')
+    if: startsWith(github.head_ref, 'release/')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
