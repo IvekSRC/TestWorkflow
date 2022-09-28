@@ -36,8 +36,8 @@ jobs:
           DAY: "${{ steps.current-time.outputs.day }}"
           HOUR: "${{ steps.current-time.outputs.hour }}"
           MINUTE: "${{ steps.current-time.outputs.minute }}"
-        run: echo "::set-output name=title::'$YEAR/$MONTH/$DAY at $HOUR:$MINUTE'
-                   ::set-output name=tag::'$YEAR$MONTH$DAY-$HOUR$MINUTE'"
+        run: echo "::set-output name=title::$YEAR/$MONTH/$DAY at $HOUR:$MINUTE
+                   ::set-output name=tag::$YEAR$MONTH$DAY-$HOUR$MINUTE"
       - name: Generate name for title
         id: title
         run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
