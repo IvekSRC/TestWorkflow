@@ -2,6 +2,10 @@ name: Create Release
 
 on:
   pull_request:
+    types:
+      - opened
+    branches:
+      - main
 
 jobs:
   build:
@@ -9,6 +13,7 @@ jobs:
 
     runs-on: windows-latest
 
+    if: startsWith(github.head_ref, 'release/')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -18,10 +23,11 @@ jobs:
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
-      - run: echo "${{ steps.PR.outputs.pr.number }} ${{ steps.PR.outputs.pr.body }}"
+        env:
+          MINUTE: '%M'
       - name: Generate name for title
         id: title
-        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
+        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:${{ env.MINUTE }}')"
       - name: Generate name for tag
         id: tag
         run: echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
@@ -35,4 +41,13 @@ jobs:
           release_name: ${{ steps.title.outputs.title }}
           draft: false
           prerelease: false
-          body: ${{ steps.PR.outputs.pr.body }}
+          body: ${{ steps.PR.outputs.pr_body }}
+      - name: Edit PR (Adding link to created release)
+        id: edit_pr
+        uses: tzkhan/pr-update-action@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          base-branch-regex: '.*'
+          body-template: |
+            [Link to Release](${{ steps.create_release.outputs.html_url }})
+          body-update-action: 'suffix'
