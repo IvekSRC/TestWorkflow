@@ -32,7 +32,6 @@ jobs:
         id: createRelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        needs: namesForTitleAndTag
         uses: actions/create-release@v1
         with:
           tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
@@ -41,7 +40,6 @@ jobs:
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
       - name: Edit PR (Adding link to created release)
-        needs: createRelease
         uses: tzkhan/pr-update-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
