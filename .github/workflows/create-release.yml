@@ -41,11 +41,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
-          release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
+          tag_name: ${ getPRandGenerateParametersForNewRelease.steps.namesForTitleAndTag.outputs.tag }
+          release_name: "${ getPRandGenerateParametersForNewRelease.steps.namesForTitleAndTag.outputs.title }"
           draft: false
           prerelease: false
-          body: ${{ steps.PR.outputs.pr_body }}
+          body: ${ getPRandGenerateParametersForNewRelease.steps.PR.outputs.pr_body }
 
   editRelease:
     needs: createRelease
@@ -61,5 +61,5 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: ".*"
           body-template: |
-            [Link to Release](${{ steps.createRelease.outputs.html_url }})
+            [Link to Release](${ createRelease.steps.createRelease.outputs.html_url })
           body-update-action: "suffix"
