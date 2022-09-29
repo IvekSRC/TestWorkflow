@@ -23,26 +23,15 @@ jobs:
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
-      # - name: Get current time
-      #   uses: josStorer/get-current-time@v2.0.1
-      #   id: current-time
-      #   with:
-      #     format: YYYYMMDD-HHmm
       - name: Generate names for title and tag
         id: namesForTitleAndTag
         run: |
           echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
           echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
       - name: Create Release
-        id: create_release
+        id: createRelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # F_TIME: "${{ steps.current-time.outputs.formattedTime }}"
-          # YEAR: ${{ steps.current-time.outputs.year }}
-          # MONTH: ${{ steps.current-time.outputs.month }}
-          # DAY: ${{ steps.current-time.outputs.day }}
-          # HOUR: ${{ steps.current-time.outputs.hour }}
-          # MINUTE: ${{ steps.current-time.outputs.minute }}
         uses: actions/create-release@v1
         with:
           tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
@@ -51,11 +40,10 @@ jobs:
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
       - name: Edit PR (Adding link to created release)
-        id: edit_pr
         uses: tzkhan/pr-update-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: ".*"
           body-template: |
-            [Link to Release](${{ steps.create_release.outputs.html_url }})
+            [Link to Release](${{ steps.createRelease.outputs.html_url }})
           body-update-action: "suffix"
