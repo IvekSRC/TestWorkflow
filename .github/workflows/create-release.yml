@@ -8,42 +8,43 @@ on:
       - main
 
 jobs:
-  if: startsWith(github.head_ref, 'release/')
-  build:
-    name: Create Release
+  run_if:
+    if: startsWith(github.head_ref, 'release/')
+    build:
+      name: Create Release
 
-    runs-on: ubuntu-latest
+      runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Get PR
-        uses: 8BitJonny/gh-get-current-pr@2.1.1
-        id: PR
-        with:
-          github-token: ${{ github.token }}
-          sha: ${{ github.event.pull_request.head.sha }}
-      - name: Generate names for title and tag
-        id: namesForTitleAndTag
-        run: |
-          echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
-          echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
-      - name: Create Release
-        id: createRelease
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
-          release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
-          draft: false
-          prerelease: false
-          body: ${{ steps.PR.outputs.pr_body }}
-      - name: Edit PR (Adding link to created release)
-        uses: tzkhan/pr-update-action@v2
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          base-branch-regex: ".*"
-          body-template: |
-            [Link to Release](${{ steps.createRelease.outputs.html_url }})
-          body-update-action: "suffix"
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Get PR
+          uses: 8BitJonny/gh-get-current-pr@2.1.1
+          id: PR
+          with:
+            github-token: ${{ github.token }}
+            sha: ${{ github.event.pull_request.head.sha }}
+        - name: Generate names for title and tag
+          id: namesForTitleAndTag
+          run: |
+            echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
+            echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
+        - name: Create Release
+          id: createRelease
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          uses: actions/create-release@v1
+          with:
+            tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
+            release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
+            draft: false
+            prerelease: false
+            body: ${{ steps.PR.outputs.pr_body }}
+        - name: Edit PR (Adding link to created release)
+          uses: tzkhan/pr-update-action@v2
+          with:
+            repo-token: "${{ secrets.GITHUB_TOKEN }}"
+            base-branch-regex: ".*"
+            body-template: |
+              [Link to Release](${{ steps.createRelease.outputs.html_url }})
+            body-update-action: "suffix"
