@@ -30,7 +30,7 @@ jobs:
       #     format: YYYYMMDD-HHmm
       - name: Generate names for title and tag
         id: namesForTitleAndTag
-        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M') name=tag::$(date +'%Y%m%d-%H%M')"
+        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M') ::set-output name=tag::$(date +'%Y%m%d-%H%M')"
       - name: Create Release
         id: create_release
         env:
