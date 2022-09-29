@@ -29,6 +29,7 @@ jobs:
           echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
           echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
       - name: Create Release
+        if: success()
         id: createRelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
