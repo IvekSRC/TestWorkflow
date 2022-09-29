@@ -40,6 +40,7 @@ jobs:
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
       - name: Edit PR (Adding link to created release)
+        if: ${{ success() }}
         uses: tzkhan/pr-update-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
