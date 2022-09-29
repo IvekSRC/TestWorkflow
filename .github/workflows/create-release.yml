@@ -8,12 +8,12 @@ on:
       - main
 
 jobs:
+  if: startsWith(github.head_ref, 'release/')
   build:
     name: Create Release
 
     runs-on: ubuntu-latest
 
-    if: startsWith(github.head_ref, 'release/')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -40,7 +40,6 @@ jobs:
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
       - name: Edit PR (Adding link to created release)
-        if: ${{ success() }}
         uses: tzkhan/pr-update-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
