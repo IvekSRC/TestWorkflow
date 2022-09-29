@@ -38,7 +38,6 @@ jobs:
           release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
           draft: false
           prerelease: false
-          latest: true
           body: ${{ steps.PR.outputs.pr_body }}
       - name: Edit PR (Adding link to created release)
         uses: tzkhan/pr-update-action@v2
