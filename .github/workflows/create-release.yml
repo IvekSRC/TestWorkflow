@@ -26,6 +26,7 @@ jobs:
         run: |
           echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
           echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
+
   createRelease:
     needs: getPRandGenerateParametersForNewRelease
     if: startsWith(github.head_ref, 'release/')
@@ -45,6 +46,7 @@ jobs:
           draft: false
           prerelease: false
           body: ${{ getPRandGenerateParametersForNewRelease.steps.PR.outputs.pr_body }}
+
   editRelease:
     needs: createRelease
     if: startsWith(github.head_ref, 'release/')
