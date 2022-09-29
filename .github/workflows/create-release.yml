@@ -9,6 +9,7 @@ on:
 
 jobs:
   getPRandGenerateParametersForNewRelease:
+    id: job1
     if: startsWith(github.head_ref, 'release/')
     name: Get PR and generate parameters for new release
     runs-on: ubuntu-latest
@@ -28,6 +29,7 @@ jobs:
           echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
 
   createRelease:
+    id: job2
     needs: getPRandGenerateParametersForNewRelease
     if: startsWith(github.head_ref, 'release/')
     name: Create release
@@ -41,13 +43,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: getPRandGenerateParametersForNewRelease.steps.namesForTitleAndTag.outputs.tag
-          release_name: getPRandGenerateParametersForNewRelease.steps.namesForTitleAndTag.outputs.title
+          tag_name: ${{ job1.steps.namesForTitleAndTag.outputs.tag }}
+          release_name: "${{ job1.steps.namesForTitleAndTag.outputs.title }}"
           draft: false
           prerelease: false
-          body: getPRandGenerateParametersForNewRelease.steps.PR.outputs.pr_body
+          body: ${{ job1.steps.PR.outputs.pr_body }}
 
   editRelease:
+    id: job3
     needs: createRelease
     if: startsWith(github.head_ref, 'release/')
     name: Edit release
@@ -61,5 +64,5 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: ".*"
           body-template: |
-            [Link to Release](createRelease.steps.createRelease.outputs.html_url)
+            [Link to Release](${{ job2.steps.createRelease.outputs.html_url }})
           body-update-action: "suffix"
