@@ -2,12 +2,17 @@ name: Create Release
 
 on:
   pull_request:
+    types:
+      - opened
+    branches:
+      - main
 
 jobs:
-  build:
+  creatingRelease:
+    if: startsWith(github.head_ref, 'release/')
     name: Create Release
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -18,21 +23,35 @@ jobs:
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
-      - run: echo "${{ steps.PR.outputs.pr.number }} ${{ steps.PR.outputs.pr.body }}"
-      - name: Generate name for title
-        id: title
-        run: echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
-      - name: Generate name for tag
-        id: tag
-        run: echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
+      - name: Generate names for title and tag
+        id: namesForTitleAndTag
+        run: |
+          echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
+          echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+        id: createRelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/create-release@v1
         with:
-          tag_name: ${{ steps.tag.outputs.tag }}
-          release_name: ${{ steps.title.outputs.title }}
+          tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
+          release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
           draft: false
           prerelease: false
-          body: ${{ steps.PR.outputs.pr.body }}
+          body: ${{ steps.PR.outputs.pr_body }}
+      - name: Wait for release to be created
+        uses: fountainhead/action-wait-for-check@v1.0.0
+        id: waitForCreateStep
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: createRelease
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Edit PR (Adding link to created release)
+        if: steps.waitForCreateStep.outputs.conclusion == 'success'
+        uses: tzkhan/pr-update-action@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          base-branch-regex: ".*"
+          body-template: |
+            [Link to Release](${{ steps.createRelease.outputs.html_url }})
+          body-update-action: "suffix"
