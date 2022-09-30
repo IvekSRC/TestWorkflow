@@ -39,6 +39,13 @@ jobs:
           draft: false
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
+      - name: Wait for release to be created
+        uses: fountainhead/action-wait-for-check@v1.0.0
+        id: waitForCreateStep
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: createRelease
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Edit PR (Adding link to created release)
         waitFor: ["createRelease"]
         uses: tzkhan/pr-update-action@v2
