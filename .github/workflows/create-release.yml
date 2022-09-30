@@ -44,7 +44,7 @@ jobs:
         id: waitForCreateStep
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: createRelease
+          checkName: creatingRelease.steps.createRelease
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Edit PR (Adding link to created release)
         if: steps.waitForCreateStep.outputs.conclusion == 'success'
