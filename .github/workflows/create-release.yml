@@ -47,7 +47,6 @@ jobs:
           checkName: createRelease
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Edit PR (Adding link to created release)
-        waitFor: ["createRelease"]
         uses: tzkhan/pr-update-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
