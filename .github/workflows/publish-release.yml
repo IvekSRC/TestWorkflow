@@ -54,5 +54,5 @@ jobs:
           body-template: |
             ${{ steps.release.outputs.body }}
 
-            ${{ steps.releaseName.outputs.string }} - [View Release](https://github.com/IvekSRC/TestWorkflow/releases/tag/${{ steps.publishedRelease.outputs.tag_name }})
+            ${{ steps.releaseName.outputs.string }} - [View Release](https://github.com/IvekSRC/TestWorkflow/releases/tag/${{ steps.release.outputs.tag_name }})
           body-update-action: "replace"
