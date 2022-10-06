@@ -28,7 +28,7 @@ jobs:
         uses: bhowell2/github-substring-action@v1
         id: releaseName
         with:
-          value: ${{ steps.tail.outputs.content }}
+          value: "${{ steps.tail.outputs.content }}"
           length_from_start: 19
       - name: Get Release
         id: release
