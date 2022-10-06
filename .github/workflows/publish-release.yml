@@ -29,7 +29,7 @@ jobs:
         id: releaseName
         with:
           value: ${{ steps.tail.outputs.content }}"
-          index_of_str: "Release "
+          length_from_start: 19
       - run: echo ${{ steps.releaseName.outputs.substring }}
       - name: Checkout code
         uses: actions/checkout@v2
