@@ -36,7 +36,7 @@ jobs:
         with:
           tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
           release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
-          draft: false
+          draft: true
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
       - name: Edit PR (Adding link to created release)
