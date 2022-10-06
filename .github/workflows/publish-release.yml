@@ -16,7 +16,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo tail -1 ${{ github.event.pull_request.body }}
+      - uses: scribd/tail-action@v1
+        id: tail
+        with:
+          string: ${{ github.event.pull_request.body }}
+          line-count: 1
+      - run: echo "${{ steps.tail.outputs.content }}"
       # - name: Checkout code
       #   uses: actions/checkout@v2
       # - name: Get Release
