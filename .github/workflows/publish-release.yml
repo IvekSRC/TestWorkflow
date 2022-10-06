@@ -46,8 +46,10 @@ jobs:
         with:
           release_id: ${{ steps.release.outputs.id }}
       - name: Update PR body for navigation to release
-        uses: mad9000/actions-find-and-replace-string@2
+        uses: tzkhan/pr-update-action@v2
         with:
-          source: ${{ github.event.pull_request.body }}
-          find: ${{ steps.releaseName.outputs.string }}
-          replace: "test"
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          base-branch-regex: ".*"
+          body-template: |
+            ${{ steps.releaseName.outputs.string }} - [View Release](${{ steps.release.outputs.html_url }})
+          body-update-action: "suffix"
