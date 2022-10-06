@@ -51,5 +51,6 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: ".*"
           body-template: |
+            ${{ steps.release.outputs.body }}
             ${{ steps.releaseName.outputs.string }} - [View Release](${{ steps.release.outputs.html_url }})
-          body-update-action: "suffix"
+          body-update-action: "replace"
