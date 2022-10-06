@@ -29,20 +29,20 @@ jobs:
           value: ${{ steps.tail.outputs.content }}"
           index_of_str: "Release "
       - run: echo ${{ steps.releaseName.outputs.substring }}
-      # - name: Checkout code
-      #   uses: actions/checkout@v2
-      # - name: Get Release
-      #   id: release
-      #   uses: cardinalby/git-get-release-action@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ github.token }}
-      #   with:
-      #     releaseName:
-      #     draft: true
-      #     prerelease: false
-      # - name: Publish Release
-      #   uses: eregon/publish-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     release_id: ${{ steps.release.outputs.id }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get Release
+        id: release
+        uses: cardinalby/git-get-release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          releaseName: ${{ steps.releaseName.outputs.substring }}
+          draft: true
+          prerelease: false
+      - name: Publish Release
+        uses: eregon/publish-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_id: ${{ steps.release.outputs.id }}
