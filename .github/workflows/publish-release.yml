@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Get last line from body
+      - name: Get last line from PR body
         uses: scribd/tail-action@v1
         id: tail
         with:
@@ -29,7 +29,7 @@ jobs:
         id: releaseName
         with:
           stringToTruncate: ${{ steps.tail.outputs.content }}
-          maxLength: 19
+          maxLength: 19 # Release name always contain 19 caracters
       - name: Get Release
         id: release
         uses: cardinalby/git-get-release-action@v1
@@ -45,3 +45,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           release_id: ${{ steps.release.outputs.id }}
+      - name: Update PR body for navigation to release
+        uses: mad9000/actions-find-and-replace-string@2
+        with:
+          source: ${{ github.event.pull_request.body }}
+          find: ${{ steps.releaseName.outputs.string }}
+          replace: "test"
