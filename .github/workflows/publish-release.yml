@@ -30,9 +30,6 @@ jobs:
         with:
           value: ${{ steps.tail.outputs.content }}"
           length_from_start: 19
-      - run: echo ${{ steps.releaseName.outputs.substring }}
-      - name: Checkout code
-        uses: actions/checkout@v2
       - name: Get Release
         id: release
         uses: cardinalby/git-get-release-action@v1
