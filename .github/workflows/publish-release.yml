@@ -24,7 +24,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          tag: ${{github.event.pull_request.head.sha}}
+          commitSha: ${{ github.event.pull_request.head.sha }}
           draft: true
           prerelease: false
       - name: Publish Release
