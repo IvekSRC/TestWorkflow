@@ -30,7 +30,6 @@ jobs:
         with:
           value: ${{ steps.tail.outputs.content }}"
           index_of_str: "Release "
-      - run: echo ${{ steps.releaseName.outputs.substring }}
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Get Release
