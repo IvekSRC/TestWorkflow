@@ -25,11 +25,11 @@ jobs:
           string: ${{ github.event.pull_request.body }}
           line-count: 1
       - name: Get Release name from last line
-        uses: bhowell2/github-substring-action@v1
+        uses: 2428392/gh-truncate-string-action@v1.1.0
         id: releaseName
         with:
-          value: ${{ steps.tail.outputs.content }}
-          length_from_start: 3
+          stringToTruncate: ${{ steps.tail.outputs.content }}
+          maxLength: 19
       - name: Get Release
         id: release
         uses: cardinalby/git-get-release-action@v1
