@@ -18,5 +18,4 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - run: |
-        echo PR #${{ github.event }} has been merged
+      - run: echo PR ${{ github.event.number }} has been merged
