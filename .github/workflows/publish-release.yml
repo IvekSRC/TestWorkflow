@@ -28,8 +28,8 @@ jobs:
         uses: bhowell2/github-substring-action@v1
         id: releaseName
         with:
-          output_name: ${{ steps.tail.outputs.content }}
-          length_from_start: 19
+          value: ${{ steps.tail.outputs.content }}
+          length_from_start: 3
       - name: Get Release
         id: release
         uses: cardinalby/git-get-release-action@v1
