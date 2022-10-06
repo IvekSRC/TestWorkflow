@@ -8,14 +8,14 @@ on:
       - main
 
 jobs:
-  creatingRelease:
+  publishingRelase:
     if: |
       startsWith(github.head_ref, 'release/') ||
       github.event.pull_request.merged == true
-    name: Create Release
+    name: Publish Release
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - run: echo PR ${{ github.event.number }} has been merged
+      - run: echo PR ${{ github.event.commitSha }} has been merged
