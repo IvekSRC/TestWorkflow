@@ -24,7 +24,7 @@ jobs:
         with:
           string: ${{ github.event.pull_request.body }}
           line-count: 1
-      - name: Get Release name from last line
+      - name: Get Release name from last line PR body
         uses: 2428392/gh-truncate-string-action@v1.1.0
         id: releaseName
         with:
