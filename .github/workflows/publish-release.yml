@@ -53,5 +53,6 @@ jobs:
           base-branch-regex: ".*"
           body-template: |
             ${{ steps.release.outputs.body }}
-            ${{ steps.releaseName.outputs.string }} - [View Release](${{ steps.publishedRelease.outputs.html_url }})
+            \n
+            ${{ steps.releaseName.outputs.string }} - [View Release](${{ steps.publishedRelease.outputs.url }})
           body-update-action: "replace"
