@@ -53,6 +53,6 @@ jobs:
           base-branch-regex: ".*"
           body-template: |
             ${{ steps.release.outputs.body }}
-            \n
-            ${{ steps.releaseName.outputs.string }} - [View Release](${{ steps.publishedRelease.outputs.url }})
+
+            ${{ steps.releaseName.outputs.string }} - [View Release](https://github.com/IvekSRC/TestWorkflow/releases/tag/${{ steps.publishedRelease.outputs.tag_name }})
           body-update-action: "replace"
