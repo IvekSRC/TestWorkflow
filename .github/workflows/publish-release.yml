@@ -16,19 +16,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Get Release
-        id: release
-        uses: cardinalby/git-get-release-action@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          commitSha: ${{ github.event.pull_request.head.sha }}
-          prerelease: false
-      - name: Publish Release
-        uses: eregon/publish-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          release_id: ${{ steps.release.outputs.id }}
+      - run: echo ${{ github.event.pull_request.body }}
+      # - name: Checkout code
+      #   uses: actions/checkout@v2
+      # - name: Get Release
+      #   id: release
+      #   uses: cardinalby/git-get-release-action@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
+      #   with:
+      #     releaseName:
+      #     draft: true
+      #     prerelease: false
+      # - name: Publish Release
+      #   uses: eregon/publish-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     release_id: ${{ steps.release.outputs.id }}
