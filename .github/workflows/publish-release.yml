@@ -18,18 +18,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Get Release
-        id: release
-        uses: cardinalby/git-get-release-action@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: Get version from ref
+        id: get-version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Publish release on GitHub
+        uses: test-room-7/action-publish-release-drafts@v0
         with:
-          commitSha: ${{ github.event.pull_request.head.sha }}
-          draft: true
-          prerelease: false
-      - name: Publish Release
-        uses: eregon/publish-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          release_id: ${{ steps.release.outputs.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          tag-name: ${{ steps.get-version.outputs.VERSION }}
