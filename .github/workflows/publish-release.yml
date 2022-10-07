@@ -40,11 +40,11 @@ jobs:
           prerelease: false
       - name: Publish Release
         id: publishedRelease
-        uses: eregon/publish-release@v1
+        uses: StuYarrow/publish-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          release_id: ${{ steps.release.outputs.id }}
+          id: ${{ steps.release.outputs.id }}
       - name: Update PR body for navigation to release
         uses: tzkhan/pr-update-action@v2
         with:
