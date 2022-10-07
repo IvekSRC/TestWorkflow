@@ -10,7 +10,7 @@ on:
 jobs:
   publishingRelease:
     if: |
-      startsWith(github.head_ref, 'release/') ||
+      startsWith(github.head_ref, 'release/') &&
       github.event.pull_request.merged == true
     name: Publish Release
     runs-on: ubuntu-latest
