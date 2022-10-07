@@ -14,7 +14,6 @@ jobs:
       github.event.pull_request.merged == true
     name: Publish Release
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -29,7 +28,7 @@ jobs:
         id: releaseName
         with:
           stringToTruncate: ${{ steps.tail.outputs.content }}
-          maxLength: 19 # Release name always contain 19 caracters
+          maxLength: 19 # Release name always contains 19 caracters
       - name: Get Release
         id: release
         uses: cardinalby/git-get-release-action@v1
