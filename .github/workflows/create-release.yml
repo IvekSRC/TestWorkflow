@@ -9,7 +9,7 @@ on:
 
 jobs:
   creatingRelease:
-    # if: startsWith(github.head_ref, 'release/')
+    if: startsWith(github.head_ref, 'release/')
     name: Create Release
     runs-on: ubuntu-latest
     steps:
