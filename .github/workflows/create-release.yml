@@ -8,7 +8,7 @@ name: Create Release
 #       - main
 
 on:
-  commit:
+  push:
 
 jobs:
   creatingRelease:
