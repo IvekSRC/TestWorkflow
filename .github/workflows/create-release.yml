@@ -25,13 +25,13 @@ jobs:
         uses: szenius/set-timezone@v1.0
         with:
           timezoneLinux: "CST"
+          timezoneMacos: "CST"
+          timezoneWindows: "Central America Standard Time"
       - name: Generate names for title and tag
         id: namesForTitleAndTag
         run: |
           echo "tag=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
           echo "title=$(date +'%Y/%m/%d at %H:%M')" >> $GITHUB_OUTPUT
-      - name: Test
-        run: echo "Tag - ${{ env.tag }}, title - ${{ env.TITLE }}"
       - name: Create Release
         id: createRelease
         env:
