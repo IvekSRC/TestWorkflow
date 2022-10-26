@@ -24,11 +24,13 @@ jobs:
       - name: Set Timezone
         uses: szenius/set-timezone@v1.0
         with:
-          timezoneWindows: "Asia/Singapore"
+          timezoneLinux: "CST"
+          timezoneMacos: "CST"
+          timezoneWindows: "Central America Standard Time"
       - name: Generate names for title and tag
         id: namesForTitleAndTag
         run: |
-          echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
+          echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"          
           echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
       - name: Create Release
         id: createRelease
