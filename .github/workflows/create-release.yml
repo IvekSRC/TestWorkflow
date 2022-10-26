@@ -19,7 +19,7 @@ jobs:
         id: setTimezone
         uses: zcong1993/setup-timezone@master
         with:
-          timezone: "Central America Standard Time"
+          timezone: MT
       - name: Get PR
         uses: 8BitJonny/gh-get-current-pr@2.1.1
         id: PR
