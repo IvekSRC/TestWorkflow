@@ -24,7 +24,7 @@ jobs:
       - name: Set Timezone
         uses: szenius/set-timezone@v1.0
         with:
-          timezoneLinux: "MDT"
+          timezoneLinux: "USA/Colorado"
       - name: Generate names for title and tag
         id: namesForTitleAndTag
         run: |
