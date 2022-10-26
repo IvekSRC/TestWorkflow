@@ -30,15 +30,15 @@ jobs:
       - name: Generate names for title and tag
         id: namesForTitleAndTag
         run: |
-          echo "title=$(date +'%Y/%m/%d at %H:%M')" >> $GITHUB_OUTPUT          
-          echo "tag=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+          echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"          
+          echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
       - name: Create Release
         id: createRelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: "${{ steps.namesForTitleAndTag.outputs.tag }}"
+          tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
           release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
           draft: true
           prerelease: false
