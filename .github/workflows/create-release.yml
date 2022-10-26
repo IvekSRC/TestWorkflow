@@ -1,7 +1,11 @@
 name: Create Release
 
 on:
-  push:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - main
 
 jobs:
   creatingRelease:
