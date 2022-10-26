@@ -1,57 +1,45 @@
 name: Create Release
 
-# on:
-#   pull_request:
-#     types:
-#       - opened
-#     branches:
-#       - main
-
 on:
   push:
 
 jobs:
   creatingRelease:
-    # if: startsWith(github.head_ref, 'release/')
+    if: startsWith(github.head_ref, 'release/')
     name: Create Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      # - name: Get PR
-      #   uses: 8BitJonny/gh-get-current-pr@2.1.1
-      #   id: PR
-      #   with:
-      #     github-token: ${{ github.token }}
-      #     sha: ${{ github.event.pull_request.head.sha }}
+      - name: Get PR
+        uses: 8BitJonny/gh-get-current-pr@2.1.1
+        id: PR
+        with:
+          github-token: ${{ github.token }}
+          sha: ${{ github.event.pull_request.head.sha }}
       - name: Get current time
         uses: josStorer/get-current-time@v2.0.2
         id: current-time
         with:
           format: YYYYMMDD-HHmm
           utcOffset: "-06:00"
-      - name: Testiranje
-        run: |
-          echo "${{ steps.current-time.outputs.formattedTime }}"
-          echo "${{ steps.current-time.outputs.time }}"
-          echo "${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.month }}/${{ steps.current-time.outputs.day }} at ${{ steps.current-time.outputs.hour }}:${{ steps.current-time.outputs.minute }}"
-      # - name: Create Release
-      #   id: createRelease
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   uses: actions/create-release@v1
-      #   with:
-      #     tag_name: ${{ steps.current-time.outputs.formattedTime }}
-      #     release_name: "${{ steps.current-time.outputs.time }}"
-      #     draft: true
-      #     prerelease: false
-      #     body: ${{ steps.PR.outputs.pr_body }}
-      # - name: Edit PR (Adding link to created release)
-      #   if: steps.createRelease.conclusion == 'success'
-      #   uses: tzkhan/pr-update-action@v2
-      #   with:
-      #     repo-token: "${{ secrets.GITHUB_TOKEN }}"
-      #     base-branch-regex: ".*"
-      #     body-template: |
-      #       ${{ steps.namesForTitleAndTag.outputs.title }} - [View Release](${{ steps.createRelease.outputs.html_url }})
-      #     body-update-action: "suffix"
+      - name: Create Release
+        id: createRelease
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.current-time.outputs.formattedTime }}
+          release_name: ${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.month }}/${{ steps.current-time.outputs.day }} at ${{ steps.current-time.outputs.hour }}:${{ steps.current-time.outputs.minute }}
+          draft: true
+          prerelease: false
+          body: ${{ steps.PR.outputs.pr_body }}
+      - name: Edit PR (Adding link to created release)
+        if: steps.createRelease.conclusion == 'success'
+        uses: tzkhan/pr-update-action@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          base-branch-regex: ".*"
+          body-template: |
+            ${{ steps.current-time.outputs.formattedTime }} - [View Release](${{ steps.createRelease.outputs.html_url }})
+          body-update-action: "suffix"
