@@ -11,7 +11,7 @@ jobs:
   creatingRelease:
     if: startsWith(github.head_ref, 'release/')
     name: Create Release
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -21,6 +21,10 @@ jobs:
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
+      - name: Set Timezone
+        uses: szenius/set-timezone@v1.0
+        with:
+          timezoneWindows: "Asia/Singapore"
       - name: Generate names for title and tag
         id: namesForTitleAndTag
         run: |
