@@ -11,34 +11,39 @@ jobs:
   creatingRelease:
     if: startsWith(github.head_ref, 'release/')
     name: Create Release
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Set Timezone
+        id: setTimezone
+        uses: zcong1993/setup-timezone@master
+        with:
+          timezone: "CST"
       - name: Get PR
         uses: 8BitJonny/gh-get-current-pr@2.1.1
         id: PR
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
-      - name: Set Timezone
-        uses: szenius/set-timezone@v1.0
-        with:
-          timezoneLinux: "CST"
-          timezoneMacos: "CST"
-          timezoneWindows: "Central America Standard Time"
       - name: Generate names for title and tag
+        if: steps.setTimezone.conclusion == 'success'
         id: namesForTitleAndTag
         run: |
-          echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"          
-          echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
+          echo "tag=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+          echo "title=$(date +'%Y/%m/%d at %H:%M')" >> $GITHUB_OUTPUT
+      - name: Test
+        run: |
+          echo "${{ steps.namesForTitleAndTag.outputs.tag }}"
+          echo "${{ steps.namesForTitleAndTag.outputs.title }}"
       - name: Create Release
+        if: steps.namesForTitleAndTag.conclusion == 'success'
         id: createRelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
+          tag_name: "${{ steps.namesForTitleAndTag.outputs.tag }}"
           release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
           draft: true
           prerelease: false
