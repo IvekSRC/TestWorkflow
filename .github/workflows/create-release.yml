@@ -21,20 +21,19 @@ jobs:
         with:
           github-token: ${{ github.token }}
           sha: ${{ github.event.pull_request.head.sha }}
-      - name: Get current time
-        uses: josStorer/get-current-time@v2.0.2
-        id: current-time
-        with:
-          format: YYYYMMDD-HHmm
-          utcOffset: "-06:00"
+      - name: Generate names for title and tag
+        id: namesForTitleAndTag
+        run: |
+          echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
+          echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
       - name: Create Release
         id: createRelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ steps.current-time.outputs.formattedTime }}
-          release_name: ${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.month }}/${{ steps.current-time.outputs.day }} at ${{ steps.current-time.outputs.hour }}:${{ steps.current-time.outputs.minute }}
+          tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
+          release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
           draft: true
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
@@ -45,5 +44,5 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: ".*"
           body-template: |
-            [View Release](${{ steps.createRelease.outputs.html_url }})
+            ${{ steps.namesForTitleAndTag.outputs.title }} - [View Release](${{ steps.createRelease.outputs.html_url }})
           body-update-action: "suffix"
