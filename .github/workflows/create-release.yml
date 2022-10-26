@@ -28,16 +28,18 @@ jobs:
       - name: Generate names for title and tag
         id: namesForTitleAndTag
         run: |
-          echo "{title}={$(date +'%Y/%m/%d at %H:%M')}" >> $GITHUB_OUTPUT       
-          echo "{tag}={$(date +'%Y%m%d-%H%M')}" >> $GITHUB_OUTPUT
+          echo "{TAG}={$(date +'%Y%m%d-%H%M')}" >> $GITHUB_OUTPUT
+          echo "{TITLE}={$(date +'%Y/%m/%d at %H:%M')}" >> $GITHUB_OUTPUT
+      - name: Test
+        run: echo "Tag - ${{ steps.namesForTitleAndTag.outputs.TAG }}, title - ${{ steps.namesForTitleAndTag.outputs.TITLE }}"
       - name: Create Release
         id: createRelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: "${{ steps.namesForTitleAndTag.outputs.tag }}"
-          release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
+          tag_name: "${{ steps.namesForTitleAndTag.outputs.TAG }}"
+          release_name: "${{ steps.namesForTitleAndTag.outputs.TITLE }}"
           draft: true
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
@@ -48,5 +50,5 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: ".*"
           body-template: |
-            ${{ steps.namesForTitleAndTag.outputs.title }} - [View Release](${{ steps.createRelease.outputs.html_url }})
+            ${{ steps.namesForTitleAndTag.outputs.TITLE }} - [View Release](${{ steps.createRelease.outputs.html_url }})
           body-update-action: "suffix"
