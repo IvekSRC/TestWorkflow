@@ -11,7 +11,7 @@ jobs:
   creatingRelease:
     if: startsWith(github.head_ref, 'release/')
     name: Create Release
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -25,21 +25,19 @@ jobs:
         uses: szenius/set-timezone@v1.0
         with:
           timezoneLinux: "CST"
-          timezoneMacos: "CST"
-          timezoneWindows: "Central America Standard Time"
       - name: Generate names for title and tag
         id: namesForTitleAndTag
         run: |
-          echo "{title}={$(date +'%Y/%m/%d at %H:%M')}" >> $GITHUB_STATE         
-          echo "{tag}={$(date +'%Y%m%d-%H%M')}" >> $GITHUB_STATE
+          echo "{title}={$(date +'%Y/%m/%d at %H:%M')}" >> $GITHUB_OUTPUT       
+          echo "{tag}={$(date +'%Y%m%d-%H%M')}" >> $GITHUB_OUTPUT
       - name: Create Release
         id: createRelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ env.tag }}
-          release_name: "${{ env.title }}"
+          tag_name: "${{ steps.namesForTitleAndTag.outputs.tag }}"
+          release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
           draft: true
           prerelease: false
           body: ${{ steps.PR.outputs.pr_body }}
@@ -50,5 +48,5 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: ".*"
           body-template: |
-            ${{ env.title }} - [View Release](${{ steps.createRelease.outputs.html_url }})
+            ${{ steps.namesForTitleAndTag.outputs.title }} - [View Release](${{ steps.createRelease.outputs.html_url }})
           body-update-action: "suffix"
