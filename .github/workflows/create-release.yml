@@ -34,6 +34,7 @@ jobs:
         run: |
           echo "${{ steps.current-time.outputs.formattedTime }}"
           echo "${{ steps.current-time.outputs.time }}"
+          echo "${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.month }}/${{ steps.current-time.outputs.day }} at ${{ steps.current-time.outputs.hour }}:${{ steps.current-time.outputs.minute }}"
       # - name: Create Release
       #   id: createRelease
       #   env:
