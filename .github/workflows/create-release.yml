@@ -12,24 +12,24 @@ on:
 
 jobs:
   creatingRelease:
-    if: startsWith(github.head_ref, 'release/')
+    # if: startsWith(github.head_ref, 'release/')
     name: Create Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Get PR
-        uses: 8BitJonny/gh-get-current-pr@2.1.1
-        id: PR
-        with:
-          github-token: ${{ github.token }}
-          sha: ${{ github.event.pull_request.head.sha }}
+      # - name: Get PR
+      #   uses: 8BitJonny/gh-get-current-pr@2.1.1
+      #   id: PR
+      #   with:
+      #     github-token: ${{ github.token }}
+      #     sha: ${{ github.event.pull_request.head.sha }}
       - name: Get current time
         uses: josStorer/get-current-time@v2.0.2
         id: current-time
         with:
           format: YYYYMMDD-HHmm
-          utcOffset: "+08:00"
+          utcOffset: "-06:00"
       - name: Testiranje
         run: |
           echo "${{ steps.current-time.outputs.formattedTime }}"
