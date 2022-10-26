@@ -11,7 +11,7 @@ jobs:
   creatingRelease:
     if: startsWith(github.head_ref, 'release/')
     name: Create Release
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -30,15 +30,15 @@ jobs:
       - name: Generate names for title and tag
         id: namesForTitleAndTag
         run: |
-          echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"          
-          echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
+          echo "tag=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+          echo "title=$(date +'%Y/%m/%d at %H:%M')" >> $GITHUB_OUTPUT
       - name: Create Release
         id: createRelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ steps.namesForTitleAndTag.outputs.tag }}
+          tag_name: "${{ steps.namesForTitleAndTag.outputs.tag }}"
           release_name: "${{ steps.namesForTitleAndTag.outputs.title }}"
           draft: true
           prerelease: false
