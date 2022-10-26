@@ -27,13 +27,11 @@ jobs:
           timezoneLinux: "CST"
           timezoneMacos: "CST"
           timezoneWindows: "Central America Standard Time"
-      - name: Test
-        run: TZUTIL /l
       - name: Generate names for title and tag
         id: namesForTitleAndTag
         run: |
-          echo "::set-output name=title::$(date +'%Y/%m/%d at %H:%M')"
-          echo "::set-output name=tag::$(date +'%Y%m%d-%H%M')"
+          echo "::name=title::$(date +'%Y/%m/%d at %H:%M')" >> $GITHUB_OUTPUT          
+          echo "::name=tag::$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
       - name: Create Release
         id: createRelease
         env:
