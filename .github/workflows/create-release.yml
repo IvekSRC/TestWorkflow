@@ -35,6 +35,7 @@ jobs:
           echo "tag=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
           echo "title=$(date +'%Y/%m/%d at %H:%M')" >> $GITHUB_OUTPUT
       - name: Create Release
+        if: steps.namesForTitleAndTag.conclusion == 'success'
         id: createRelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
