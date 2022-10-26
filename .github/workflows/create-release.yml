@@ -26,8 +26,8 @@ jobs:
         uses: szenius/set-timezone@v1.0
         with:
           timezoneLinux: "CST"
-          # timezoneMacos: "CST"
-          # timezoneWindows: "Central America Standard Time"
+          timezoneMacos: "CST"
+          timezoneWindows: "Central America Standard Time"
       - name: Generate names for title and tag
         if: steps.setTimezone.conclusion == 'success'
         id: namesForTitleAndTag
