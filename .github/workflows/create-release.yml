@@ -24,9 +24,9 @@ jobs:
       - name: Set Timezone
         uses: szenius/set-timezone@v1.0
         with:
-          timezoneLinux: "Asia/Singapore"
-          timezoneMacos: "Asia/Singapore"
-          timezoneWindows: "Singapore Standard Time"
+          timezoneLinux: "CST"
+          timezoneMacos: "CST"
+          timezoneWindows: "Central America Standard Time"
       - name: Test
         run: TZUTIL /l
       - name: Generate names for title and tag
