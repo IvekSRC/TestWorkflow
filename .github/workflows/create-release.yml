@@ -49,6 +49,6 @@ jobs:
           pr_title: ${{ steps.PR.outputs.pr_title }}
           pr_source: ${{ github.head_ref }}
           pr_body: |
-
             ${{ steps.PR.outputs.pr_body }}
+
             ${{ steps.namesForTitleAndTag.outputs.title }} - [View Release](${{ steps.createRelease.outputs.html_url }})
