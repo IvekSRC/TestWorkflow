@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Get last line from PR body
         id: tail
-        run: lastLine=`tail -n 1 ${{ github.event.pull_request.body }}` >> $GITHUB_OUTPUT
+        run: lastLine=`tail -n 1 "${{ github.event.pull_request.body }}"` >> $GITHUB_OUTPUT
       - name: Get Release name from last line PR body
         uses: 2428392/gh-truncate-string-action@v1.1.0
         id: releaseName
