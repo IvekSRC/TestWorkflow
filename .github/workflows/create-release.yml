@@ -46,8 +46,8 @@ jobs:
         uses: k3rnels-actions/pr-update@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          pr_title: ${{ steps.PR.outputs.prTitle }}
-          pr_source: github.head_ref
+          pr_title: ${{ steps.PR.outputs.pr_title }}
+          pr_source: ${{ github.head_ref }}
           pr_body: |
             ${{ steps.PR.outputs.pr_body }}
             ${{ steps.namesForTitleAndTag.outputs.title }} - [View Release](${{ steps.createRelease.outputs.html_url }})
