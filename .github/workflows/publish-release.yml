@@ -18,7 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Get last line from PR body
-        uses: tailscale/github-action@v1
+        uses: scribd/tail-action@v1
         id: tail
         with:
           string: ${{ github.event.pull_request.body }}
