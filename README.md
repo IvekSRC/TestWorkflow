@@ -1,2 +1,2 @@
 Testiranje 1
-Testiranje 2
+Test 2
