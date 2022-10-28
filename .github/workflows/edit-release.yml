@@ -1,0 +1,39 @@
+name: Edit Release
+
+on:
+  pull_request:
+    types:
+      - edited
+    branches:
+      - main
+
+jobs:
+  publishingRelease:
+    if: startsWith(github.head_ref, 'release/') &&
+    name: Edit Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get release name from PR body
+        id: releaseName
+        run: |
+          echo "${{ github.event.pull_request.body }}" > /tmp/tail.txt
+          LAST_LINE=`tail -n 1 /tmp/tail.txt`
+          echo "$LAST_LINE" > /tmp/lastLine.txt
+          RELEASE_NAME=`cut -c -19 /tmp/lastLine.txt`
+          echo "content=$RELEASE_NAME" >> $GITHUB_OUTPUT
+      - name: Get Release
+        id: release
+        uses: cardinalby/git-get-release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          releaseName: ${{ steps.releaseName.outputs.content }}
+      - name: Edit Release
+        uses: irongut/EditRelease@v1.2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          id: ${{ steps.release.outputs.id }}
+          body: "Test"
+          replacebody: true
