@@ -24,10 +24,9 @@ jobs:
       #     string: ${{ github.event.pull_request.body }}
       #     line-count: 1
       - name: Get last line from PR body
-        id: lastLine
-        run: lastLine=$(tail -n 1 ${{ github.event.pull_request.body }}) >> $GITHUB_OUTPUT
-      - name: Test
-        run: echo ${{ steps.lastLine.outputs }}
+        run: |
+          TAIL_CONTENT=`tail -n 1 ${{ github.event.pull_request.body }}`
+          echo "::set-output name=content::$TAIL_CONTENT"
       - name: Get Release name from last line PR body
         uses: 2428392/gh-truncate-string-action@v1.1.0
         id: releaseName
