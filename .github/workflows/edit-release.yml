@@ -26,8 +26,8 @@ jobs:
       - name: Get PR body without last line
         id: prBody
         run: |
-          echo "${{ github.event.pull_request.body }}" > /tmp/tail.txt
-          BODY_WITHOUT_LAST_LINE=`head -n -2 /tmp/tail.txt`
+          echo "${{ github.event.pull_request.body }}" > /tmp/prBody.txt
+          BODY_WITHOUT_LAST_LINE=`head -n -2 /tmp/prBody.txt`
           echo $BODY_WITHOUT_LAST_LINE
       - name: Get Release
         id: release
@@ -41,5 +41,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           id: ${{ steps.release.outputs.id }}
-          body: ${{ steps.prBody.outputs.content }}
+          body: $BODY_WITHOUT_LAST_LINE
           replacebody: true
