@@ -21,8 +21,8 @@ jobs:
         id: releaseName
         run: |
           echo "${{ github.event.pull_request.body }}" > /tmp/tail.txt
-          TAIL_CONTENT=`tail -n 1 /tmp/tail.txt`
-          echo "$TAIL_CONTENT" > /tmp/lastLine.txt
+          LAST_LINE=`tail -n 1 /tmp/tail.txt`
+          echo "$LAST_LINE" > /tmp/lastLine.txt
           RELEASE_NAME=`cut -c -19 /tmp/lastLine.txt`
           echo "content=$RELEASE_NAME" >> $GITHUB_OUTPUT
       - name: Get Release
