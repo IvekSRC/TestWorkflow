@@ -25,7 +25,7 @@ jobs:
       #     line-count: 1
       - name: Get last line from PR body
         id: lastLine
-        run: tail -n 1 ${{ github.event.pull_request.body }} >> $GITHUB_OUTPUT
+        run: lastLine=$(tail -n 1 ${{ github.event.pull_request.body }}) >> $GITHUB_OUTPUT
       - name: Test
         run: echo ${{ steps.lastLine.outputs }}
       - name: Get Release name from last line PR body
