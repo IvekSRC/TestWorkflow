@@ -27,11 +27,11 @@ jobs:
           echo "content=$TAG_NAME" >> $GITHUB_OUTPUT
       - name: Get Release
         id: release
-        uses: kaliber5/action-get-release@v1
+        uses: bruceadams/get-release@v1.3.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          token: ${{ github.token }}
           tag_name: ${{ steps.releaseName.outputs.content }}
-          draft: true
       - name: Publish Release
         id: publishedRelease
         uses: eregon/publish-release@v1
