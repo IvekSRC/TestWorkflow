@@ -27,7 +27,7 @@ jobs:
         id: prBody
         run: |
           echo "${{ github.event.pull_request.body }}" > /tmp/body.txt
-          BODY=`sed '$d' /tmp/body.txt`
+          BODY=`sed $d /tmp/body.txt`
           echo "prBody=$BODY" >> $GITHUB_OUTPUT
       - name: Get Release
         id: release
