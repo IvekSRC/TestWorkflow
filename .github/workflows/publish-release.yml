@@ -31,6 +31,7 @@ jobs:
         with:
           token: ${{ github.token }}
           tag_name: ${{ steps.releaseName.outputs.content }}
+          draft: true
       - name: Publish Release
         id: publishedRelease
         uses: eregon/publish-release@v1
