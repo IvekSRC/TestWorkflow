@@ -23,17 +23,14 @@ jobs:
           echo "${{ github.event.pull_request.body }}" > /tmp/tail.txt
           LAST_LINE=`tail -n 1 /tmp/tail.txt`
           echo "$LAST_LINE" > /tmp/lastLine.txt
-          RELEASE_NAME=`cut -c -19 /tmp/lastLine.txt`
-          echo "content=$RELEASE_NAME" >> $GITHUB_OUTPUT
+          TAG_NAME=`cut -c -13 /tmp/lastLine.txt`
+          echo "content=$TAG_NAME" >> $GITHUB_OUTPUT
       - name: Get Release
         id: release
-        uses: cardinalby/git-get-release-action@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        uses: kaliber5/action-get-release@v1
         with:
-          releaseName: ${{ steps.releaseName.outputs.content }}
-          draft: true
-          prerelease: false
+          token: ${{ github.token }}
+          tag_name: ${{ steps.releaseName.outputs.content }}
       - name: Publish Release
         id: publishedRelease
         uses: eregon/publish-release@v1
@@ -46,8 +43,15 @@ jobs:
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: ".*"
-          body-template: |
-            ${{ steps.release.outputs.body }}
-
-            ${{ steps.releaseName.outputs.content }} - [View Release](https://github.com/IvekSRC/TestWorkflow/releases/tag/${{ steps.release.outputs.tag_name }})
+          body-template: ${{ steps.releaseName.outputs.content }} - [View Release](https://github.com/IvekSRC/TestWorkflow/releases/tag/${{ steps.release.outputs.tag_name }})
           body-update-action: "replace"
+      # - name: Update PR body for navigation to release
+      #   uses: k3rnels-actions/pr-update@v1
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     pr_title: ${{ github.event.pull_request.title }}
+      #     pr_source: ${{ github.head_ref }}
+      #     pr_body: |
+      #       ${{ steps.release.outputs.body }}
+
+      #       ${{ steps.releaseName.outputs.content }} - [View Release](https://github.com/IvekSRC/TestWorkflow/releases/tag/${{ steps.release.outputs.tag_name }})

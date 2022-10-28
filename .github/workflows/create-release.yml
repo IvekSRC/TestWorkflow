@@ -51,4 +51,4 @@ jobs:
           pr_body: |
             ${{ steps.PR.outputs.pr_body }}
 
-            ${{ steps.namesForTitleAndTag.outputs.title }} - [View Release](${{ steps.createRelease.outputs.html_url }})
+            ${{ steps.namesForTitleAndTag.outputs.tag }} - [View Release](${{ steps.createRelease.outputs.html_url }})
