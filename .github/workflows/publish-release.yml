@@ -25,7 +25,8 @@ jobs:
       #     line-count: 1
       - name: Get last line from PR body
         run: |
-          TAIL_CONTENT=`tail -n 1 ${{ github.event.pull_request.body }}`
+          echo "${{ github.event.pull_request.body }}" > /tmp/tail.txt
+          TAIL_CONTENT=`tail -n 1 /tmp/tail.txt`
           echo "::set-output name=content::$TAIL_CONTENT"
       - name: Get Release name from last line PR body
         uses: 2428392/gh-truncate-string-action@v1.1.0
