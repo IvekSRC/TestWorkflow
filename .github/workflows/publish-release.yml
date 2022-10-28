@@ -25,12 +25,6 @@ jobs:
           echo "$TAIL_CONTENT" > /tmp/lastLine.txt
           RELEASE_NAME=`cut -c 19 /tmp/lastLine.txt`
           echo "content=$RELEASE_NAME" >> $GITHUB_OUTPUT
-      # - name: Get Release name from last line PR body
-      #   uses: 2428392/gh-truncate-string-action@v1.1.0
-      #   id: releaseName
-      #   with:
-      #     stringToTruncate: ${{ steps.tail.outputs.content }}
-      #     maxLength: 19 # Release name always contains 19 caracters
       - name: Get Release
         id: release
         uses: cardinalby/git-get-release-action@v1
