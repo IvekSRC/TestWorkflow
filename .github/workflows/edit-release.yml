@@ -28,8 +28,9 @@ jobs:
         run: |
           echo "${{ github.event.pull_request.body }}" > /tmp/prBody.txt
           BODY_WITHOUT_REDIRECT_LINK=$(echo `head -n -3 /tmp/prBody.txt` | tr '\n' ' ')
-          `sed -i -e :a -e '/^\n*$/{$d;N;ba' -e '}' $BODY_WITHOUT_REDIRECT_LINK`
-          echo "prBody=$BODY_WITHOUT_REDIRECT_LINK" > $GITHUB_OUTPUT
+          echo "$BODY_WITHOUT_REDIRECT_LINK" > /tmp/prBody.txt
+          BODY_WITHOUT_REDIRECT_LINK_MODIFIED=`sed -i -e :a -e '/^\n*$/{$d;N;ba' -e '}' /tmp/prBody.txt`
+          echo "prBody=$BODY_WITHOUT_REDIRECT_LINK_MODIFIED" > $GITHUB_OUTPUT
       - name: Get Release
         id: release
         uses: cardinalby/git-get-release-action@v1
