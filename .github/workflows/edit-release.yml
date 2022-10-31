@@ -27,7 +27,8 @@ jobs:
         id: prBody
         run: |
           echo "${{ github.event.pull_request.body }}" > /tmp/prBody.txt
-          echo `head -n -2 /tmp/prBody.txt` > /tmp/prBody2.txt
+          BODY_WITHOUT_LAST_LINE=`head -n -2 /tmp/prBody.txt`
+          echo "prBody=$BODY_WITHOUT_LAST_LINE" > $GITHUB_OUTPUT
       - name: Get Release
         id: release
         uses: cardinalby/git-get-release-action@v1
@@ -40,5 +41,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           id: ${{ steps.release.outputs.id }}
-          body: /tmp/prBody2.txt
+          body: ${{ steps.prBody.outputs.prBody }}
           replacebody: true
