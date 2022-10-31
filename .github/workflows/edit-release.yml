@@ -27,9 +27,9 @@ jobs:
         id: prBody
         run: |
           echo "${{ github.event.pull_request.body }}" > /tmp/prBody.txt
-          BODY_WITHOUT_REDIRECT_LINK=$(echo `head -n -3 /tmp/prBody.txt` | tr '\n' ' ')
-          echo "$BODY_WITHOUT_REDIRECT_LINK" > /tmp/prBody.txt
-          BODY_WITHOUT_REDIRECT_LINK_MODIFIED=`sed -i -e :a -e '/^\n*$/{$d;N;ba' -e '}' /tmp/prBody.txt`
+          BODY_WITHOUT_REDIRECT_LINK=$(echo `head -n -2 /tmp/prBody.txt` | tr '\n' ' ')
+          echo "$BODY_WITHOUT_REDIRECT_LINK" > /tmp/modifiedBody.txt
+          BODY_WITHOUT_REDIRECT_LINK_MODIFIED=`sed -i -e :a -e '/^\n*$/{$d;N;ba' -e '}' /tmp/modifiedBody.txt`
           echo "prBody=$BODY_WITHOUT_REDIRECT_LINK_MODIFIED" > $GITHUB_OUTPUT
       - name: Get Release
         id: release
