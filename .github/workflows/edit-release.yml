@@ -23,12 +23,12 @@ jobs:
           echo "$LAST_LINE" > /tmp/lastLine.txt
           RELEASE_NAME=`cut -c -19 /tmp/lastLine.txt`
           echo "content=$RELEASE_NAME" >> $GITHUB_OUTPUT
-      - name: Get PR body without last line
+      - name: Get PR body without redirect link
         id: prBody
         run: |
           echo "${{ github.event.pull_request.body }}" > /tmp/prBody.txt
-          BODY_WITHOUT_LAST_LINE=$(echo `head -n -2 /tmp/prBody.txt` | tr '\n' ' ')
-          echo "prBody=$BODY_WITHOUT_LAST_LINE" > $GITHUB_OUTPUT
+          BODY_WITHOUT_REDIRECT_LINK=$(echo `head -n -1 /tmp/prBody.txt` | tr '\n' ' ')
+          echo "prBody=$BODY_WITHOUT_REDIRECT_LINK" > $GITHUB_OUTPUT
       - name: Get Release
         id: release
         uses: cardinalby/git-get-release-action@v1
