@@ -19,11 +19,16 @@ jobs:
         id: releaseName
         run: |
           echo "${{ github.event.pull_request.body }}" > /tmp/tail.txt
-          echo "${{ github.event.pull_request.body }}" > /tmp/prBody.txt
           LAST_LINE=`tail -n 1 /tmp/tail.txt`
           echo "$LAST_LINE" > /tmp/lastLine.txt
           RELEASE_NAME=`cut -c -19 /tmp/lastLine.txt`
           echo "content=$RELEASE_NAME" >> $GITHUB_OUTPUT
+      - name: Get PR body without last line
+        id: prBody
+        run: |
+          echo "${{ github.event.pull_request.body }}" > /tmp/prBody.txt
+          BODY_WITHOUT_LAST_LINE=`head -n -2 /tmp/prBody.txt`
+          echo "{prBody}={$BODY_WITHOUT_LAST_LINE}" >> $GITHUB_OUTPUT
       - name: Get Release
         id: release
         uses: cardinalby/git-get-release-action@v1
@@ -36,5 +41,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           id: ${{ steps.release.outputs.id }}
-          body: "head -n -2 /tmp/prBody.txt"
+          body: ${{ steps.prBody.outputs.prBody }}
           replacebody: true
