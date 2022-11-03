@@ -43,13 +43,11 @@ jobs:
           body: ${{ steps.PR.outputs.pr_body }}
       - name: Edit PR (Adding link to created release)
         if: steps.createRelease.conclusion == 'success'
-        uses: k3rnels-actions/pr-update@v1
+        uses: tzkhan/pr-update-action@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          pr_title: ${{ steps.PR.outputs.pr_title }}
-          pr_source: ${{ github.head_ref }}
-          pr_body: |
-            ${{ steps.PR.outputs.pr_body }}
-
-            :warning: Do not edit or delete next line of PR body :warning:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          base-branch-regex: ".*"
+          body-template: |
+            :warning: Please do not edit or delete next line of PR body :warning:
             ${{ steps.namesForTitleAndTag.outputs.title }} - [View Release](${{ steps.createRelease.outputs.html_url }})
+          body-update-action: "suffix"
