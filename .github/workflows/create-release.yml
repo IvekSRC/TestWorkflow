@@ -46,7 +46,7 @@ jobs:
         uses: tzkhan/pr-update-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          base-branch-regex: ".*"
+          base-branch-regex: "main"
           body-template: |
             :warning: Please do not edit or delete next line of PR body :warning:
             ${{ steps.namesForTitleAndTag.outputs.title }} - [View Release](${{ steps.createRelease.outputs.html_url }})
