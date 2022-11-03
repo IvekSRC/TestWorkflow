@@ -42,4 +42,5 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           TAG_NAME: ${{ steps.release.outputs.tag_name }}
         with:
+          draft: true
           body: ${{ steps.prBody.outputs.prBody }}
