@@ -49,6 +49,6 @@ jobs:
           body-template: |
             ${{ steps.release.outputs.body }}
 
-            :warning: Do not edit or delete next line of PR body :warning:
+            :warning: Please do not edit or delete next line of PR body :warning:
             ${{ steps.releaseName.outputs.content }} - [View Release](https://github.com/IvekSRC/TestWorkflow/releases/tag/${{ steps.release.outputs.tag_name }})
           body-update-action: "replace"
