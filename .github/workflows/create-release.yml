@@ -20,12 +20,6 @@ jobs:
         uses: zcong1993/setup-timezone@master
         with:
           timezone: America/Denver
-      - name: Get PR
-        uses: 8BitJonny/gh-get-current-pr@2.1.3
-        id: PR
-        with:
-          github-token: ${{ github.token }}
-          sha: ${{ github.event.pull_request.head.sha }}
       - name: Generate names for title and tag
         if: steps.setTimezone.conclusion == 'success'
         id: namesForTitleAndTag
@@ -40,7 +34,7 @@ jobs:
           tag: "${{ steps.namesForTitleAndTag.outputs.tag }}"
           name: "${{ steps.namesForTitleAndTag.outputs.title }}"
           draft: true
-          body: ${{ steps.PR.outputs.pr_body }}
+          body: ${{ github.event.pull_request.body }}
       - name: Edit PR (Adding link to created release)
         if: steps.createRelease.conclusion == 'success'
         uses: tzkhan/pr-update-action@v2
