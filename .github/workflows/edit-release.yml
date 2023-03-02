@@ -51,7 +51,7 @@ jobs:
         with:
           releaseName: ${{ steps.releaseName.outputs.content }}
       - name: Update PR body for navigation to release
-        uses: tzkhan/pr-update-action@v2
+        uses: seripap/pr-update-action@v3.1.6
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: ".*"

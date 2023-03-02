@@ -37,7 +37,7 @@ jobs:
           body: ${{ github.event.pull_request.body }}
       - name: Edit PR (Adding link to created release)
         if: steps.createRelease.conclusion == 'success'
-        uses: tzkhan/pr-update-action@v2
+        uses: seripap/pr-update-action@v3.1.6
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: "main"
