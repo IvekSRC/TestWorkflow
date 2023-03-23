@@ -6,6 +6,11 @@ on:
       - closed
     branches:
       - main
+  workflow_run:
+    workflows:
+      - [Create Release, Edit Release]
+    types:
+      - completed
 
 jobs:
   publishingRelease:
