@@ -6,11 +6,6 @@ on:
       - closed
     branches:
       - main
-  workflow_run:
-    workflows:
-      - [Create Release, Edit Release]
-    types:
-      - completed
 
 jobs:
   publishingRelease:
@@ -20,6 +15,13 @@ jobs:
     name: Publish Release
     runs-on: ubuntu-latest
     steps:
+      - name: Wait for creation to succeed
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: ${{ github.ref }}
+          check-name: "Edit PR (Adding link to created release)"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Get release name from PR body
