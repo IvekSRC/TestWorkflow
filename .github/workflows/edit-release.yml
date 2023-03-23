@@ -19,8 +19,6 @@ jobs:
         uses: ygqygq2/workflow-wait-action@v1
         with:
           workflows: "Create Release"
-      - name: Resume and run once, after all workflows are completed
-        run: date
       - name: Get release name from PR body
         id: releaseName
         run: |
