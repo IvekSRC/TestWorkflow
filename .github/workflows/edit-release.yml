@@ -12,6 +12,8 @@ on:
     types:
       - completed
 
+needs: Create Release
+
 jobs:
   publishingRelease:
     if: startsWith(github.head_ref, 'release/')
