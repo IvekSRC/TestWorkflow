@@ -15,14 +15,14 @@ jobs:
     name: Publish Release
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for creation to succeed
-        uses: lewagon/wait-on-check-action@v1.3.1
-        with:
-          check-name: "Edit PR (Adding link to created release)"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Pause until all workflows are completed
+        uses: ygqygq2/workflow-wait-action@v1
+        with:
+          workflows: "Create Release | Edit Release"
+      - name: Resume and run once, after all workflows are completed
+        run: date
       - name: Get release name from PR body
         id: releaseName
         run: |
