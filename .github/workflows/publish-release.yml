@@ -12,15 +12,12 @@ jobs:
     if: |
       startsWith(github.head_ref, 'release/') &&
       github.event.pull_request.merged == true
+    needs: Edit PR (Adding link to created release)
     name: Publish Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Pause until all workflows are completed
-        uses: ygqygq2/workflow-wait-action@v1
-        with:
-          workflows: "Create Release | Edit Release"
       - name: Get release name from PR body
         id: releaseName
         run: |
