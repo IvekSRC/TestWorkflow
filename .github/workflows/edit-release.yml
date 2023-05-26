@@ -27,6 +27,7 @@ jobs:
         id: prBody
         run: |
           echo "${{ github.event.pull_request.body }}" > /tmp/prBody.txt
+          echo /tmp/prBody.txt
           BODY_WITHOUT_REDIRECT_LINK=$(echo `head -n -2 /tmp/prBody.txt | tr '\n' ' '`)
           echo "prBody=$BODY_WITHOUT_REDIRECT_LINK" > $GITHUB_OUTPUT
       - name: Get Release
@@ -36,6 +37,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           releaseName: ${{ steps.releaseName.outputs.content }}
+      - name: Print PR body
+        run: echo ${{ steps.prBody.outputs.prBody }}
       - name: Edit Release
         uses: irongut/EditRelease@v1.2.0
         with:
