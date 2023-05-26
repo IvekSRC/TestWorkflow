@@ -37,8 +37,7 @@ jobs:
         with:
           releaseName: ${{ steps.releaseName.outputs.content }}
       - name: Print PR body
-        run: echo |
-          "${{ steps.prBody.outputs.prBody }}"
+        run: echo ${{ steps.prBody.outputs.prBody }}
       - name: Edit Release
         uses: irongut/EditRelease@v1.2.0
         with:
