@@ -27,9 +27,12 @@ jobs:
         id: prBody
         run: |
           echo "${{ github.event.pull_request.body }}" > /tmp/prBody.txt
-          echo "/tmp/prBody.txt"
+          cat /tmp/prBody.txt
           BODY_WITHOUT_REDIRECT_LINK=$(echo `head -n -2 /tmp/prBody.txt | tr '\n' ' '`)
           echo "prBody=$BODY_WITHOUT_REDIRECT_LINK" > $GITHUB_OUTPUT
+      - name: Echo prBody.txt content
+        run: |
+          cat /tmp/prBody.txt
       - name: Get Release
         id: release
         uses: cardinalby/git-get-release-action@v1
