@@ -8,17 +8,13 @@ on:
       - main
 
 jobs:
-  publishingRelease:
+  editingRelease:
     if: startsWith(github.head_ref, 'release/')
     name: Edit Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Pause until all workflows are completed
-        uses: ygqygq2/workflow-wait-action@v1
-        with:
-          workflows: "Create Release"
       - name: Get release name from PR body
         id: releaseName
         run: |
