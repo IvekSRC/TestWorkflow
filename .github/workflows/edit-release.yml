@@ -37,14 +37,15 @@ jobs:
         with:
           releaseName: ${{ steps.releaseName.outputs.content }}
       - name: Print PR body
-        run: echo "${ steps.prBody.outputs.prBody }"
-      # - name: Edit Release
-      #   uses: irongut/EditRelease@v1.2.0
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     id: ${{ steps.release.outputs.id }}
-      #     body: ${{ steps.prBody.outputs.prBody }}
-      #     replacebody: true
+        run: echo |
+          "${ steps.prBody.outputs.prBody }"
+      - name: Edit Release
+        uses: irongut/EditRelease@v1.2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          id: ${{ steps.release.outputs.id }}
+          body: ${{ steps.prBody.outputs.prBody }}
+          replacebody: true
       - name: Get Modified Release
         id: modifiedRelease
         uses: cardinalby/git-get-release-action@v1
