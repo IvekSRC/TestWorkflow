@@ -15,6 +15,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Disable PR description edits
+        run: |
+          PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          API_URL="https://api.github.com/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER"
+          TOKEN="${{ secrets.GITHUB_TOKEN }}"
+
+          echo "Disabling PR description edits..."
+          curl -X PATCH \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            -d '{"maintainer_can_modify": false}' \
+            "$API_URL"
       - name: Get release name from PR body
         id: releaseName
         run: |
@@ -36,8 +48,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           releaseName: ${{ steps.releaseName.outputs.content }}
-      - name: Print PR body
-        run: echo ${{ steps.prBody.outputs.BODY_WITHOUT_REDIRECT_LINK }}
       - name: Edit Release
         uses: irongut/EditRelease@v1.2.0
         with:
@@ -63,3 +73,8 @@ jobs:
             :warning: Please do not edit or delete next line of PR body :warning:
             ${{ steps.releaseName.outputs.content }} - [View Release](${{ steps.modifiedRelease.outputs.html_url }})
           body-update-action: "replace"
+      - name: Enable PR description edits
+        if: ${{ always() }}
+        run: |
+          PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          API_URL="https
