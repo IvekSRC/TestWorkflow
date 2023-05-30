@@ -15,18 +15,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Disable PR description edits
+      - name: Disable PR description edit
         run: |
-          PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          API_URL="https://api.github.com/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER"
-          TOKEN="${{ secrets.GITHUB_TOKEN }}"
-
-          echo "Disabling PR description edits..."
-          curl -X PATCH \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: Bearer $TOKEN" \
-            -d '{"maintainer_can_modify": false}' \
-            "$API_URL"
+          curl -L \
+            -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"\
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} \
+            -d '{"maintainer_can_modify": false}'
       - name: Get release name from PR body
         id: releaseName
         run: |
@@ -73,8 +70,12 @@ jobs:
             :warning: Please do not edit or delete next line of PR body :warning:
             ${{ steps.releaseName.outputs.content }} - [View Release](${{ steps.modifiedRelease.outputs.html_url }})
           body-update-action: "replace"
-      - name: Enable PR description edits
-        if: ${{ always() }}
+      - name: Enable PR description edit
         run: |
-          PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          API_URL="https
+          curl -L \
+            -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"\
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} \
+            -d '{"maintainer_can_modify": true}'
